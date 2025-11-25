@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eco training south luangwa</title>
+  <style>
+    :root{
+      --bg:#f7fafc;
+      --card:#ffffff;
+      --accent:#2563eb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:#0f172a}
+    .wrap{max-width:1100px;margin:24px auto;padding:16px}
+
+    /* Slideshow styles */
+    .slideshow{position:relative;overflow:hidden;border-radius:12px;background:#000}
+    .slides{display:flex;transition:transform 20s ease-in-out;width:100%}
+    .slide{min-width:100%;flex-shrink:0;display:block;position:relative}
+    .slide img{width:100%;height:60vh;object-fit:cover;display:block}
+
+    /* caption (optional) */
+    .caption{position:absolute;left:16px;bottom:16px;background:rgba(0,0,0,0.45);color:#fff;padding:8px 12px;border-radius:8px;font-size:0.95rem}
+
+    /* dots */
+    .dots{position:absolute;left:50%;transform:translateX(-50%);bottom:10px;display:flex;gap:8px}
+    .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.5);cursor:pointer}
+    .dot.active{background:var(--accent)}
+
+    /* arrows */
+    .arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.35);border:none;color:#fff;padding:10px;border-radius:50%;cursor:pointer}
+    .arrow.left{left:12px}
+    .arrow.right{right:12px}
+
+    /* responsive tweaks */
+    @media (max-width:900px){
+      .slide img{height:50vh}
+    }
+    @media (max-width:480px){
+      .slide img{height:38vh}
+      .caption{font-size:0.85rem;padding:6px 8px}
+    }
+
+    /* content area */
+    .content{margin-top:18px;background:var(--card);padding:20px;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,0.06)}
+    .content h2{margin-top:0}
+    .content p{line-height:1.65;color:#334155}
+
+    /* small helper */
+    .muted{color:#64748b;font-size:0.9rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1 style="margin-bottom:8px">Our curren project-ICT </h1>
+   <a href="contact-us.html" style="background-color: #16a34a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px;">Donate</a>
+
+    <div class="slideshow" id="slideshow" aria-roledescription="carousel">
+      <div class="slides" id="slides">
+        <!-- Slide 1 -->
+        <div class="slide" data-index="0">
+           <img src="assets/images/b8.jpg" alt="">
+          <div class="caption">................</div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="slide" data-index="1">
+           <img src="assets/images/b13.jpg" alt="">
+          <div class="caption">Community projects</div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="slide" data-index="2">
+          <img src="assets/images/std2.jpg" alt="">
+          <div class="caption">.............</div>
+        </div>
+        <!-- Slide 4 -->
+        <div class="slide" data-index="3">
+           <img src="assets/images/std1.jpg" alt="">
+          <div class="caption">...............</div>
+        </div>
+        <!-- Slide 5 -->
+        <div class="slide" data-index="4">
+           <img src="assets/images/b002.jpg" alt="">
+          <div class="caption">.............</div>
+        </div>
+        <!-- Slide 6 -->
+        <div class="slide" data-index="5">
+           <img src="assets/images/b5.jpg" alt="">
+          <div class="caption">........</div>
+        </div>
+        <!-- Slide 7 -->
+        <div class="slide" data-index="6">
+          <img src="assets/images/std1.jpg" alt="">
+          <div class="caption">..................</div>
+        </div>
+      </div>
+
+      <!-- arrows -->
+      <button class="arrow left" id="prev" aria-label="Previous slide">❮</button>
+      <button class="arrow right" id="next" aria-label="Next slide">❯</button>
+
+      <!-- dots -->
+      <div class="dots" id="dots" role="tablist" aria-label="Slide dots"></div>
+    </div>
+
+    <!-- editable content area below slideshow -->
+    <div class="content" id="below">
+      <h2>About Our Work</h2>
+
+      <!-- Replace these paragraphs with your own text. At least four paragraphs are provided. -->
+      <p id="p1"> the page will be uploaded soon</p>
+      <p id="p2"> ........................</p>
+      <p id="p3"> ........................</p>
+      <p id="p4"> ........................</p>
+
+    </div>
+
+  </div>
+
+  <script>
+    (function(){
+      const slidesEl = document.getElementById('slides');
+      const slides = document.querySelectorAll('.slide');
+      const dotsEl = document.getElementById('dots');
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+      const total = slides.length;
+      let index = 0;
+      let timer = null;
+      const interval = 4000; // ms
+
+      // build dots
+      for(let i=0;i<total;i++){
+        const d = document.createElement('button');
+        d.className='dot';
+        d.setAttribute('aria-label','Go to slide '+(i+1));
+        d.setAttribute('data-index',i);
+        d.addEventListener('click', ()=>{goTo(parseInt(d.dataset.index)); resetTimer();});
+        dotsEl.appendChild(d);
+      }
+
+      const dots = dotsEl.querySelectorAll('.dot');
+
+      function update(){
+        slidesEl.style.transform = `translateX(-${index*100}%)`;
+        dots.forEach((dot,i)=>dot.classList.toggle('active', i===index));
+      }
+
+      function goTo(i){
+        index = (i+total)%total;
+        update();
+      }
+
+      function next(){ goTo(index+1); }
+      function prev(){ goTo(index-1); }
+
+      nextBtn.addEventListener('click', ()=>{ next(); resetTimer(); });
+      prevBtn.addEventListener('click', ()=>{ prev(); resetTimer(); });
+
+      // autoplay
+      function startTimer(){ timer = setInterval(next, interval); }
+      function resetTimer(){ if(timer){ clearInterval(timer); } startTimer(); }
+
+      // pause on hover
+      const slideshow = document.getElementById('slideshow');
+      slideshow.addEventListener('mouseenter', ()=>{ if(timer) clearInterval(timer); });
+      slideshow.addEventListener('mouseleave', ()=>{ startTimer(); });
+
+      // init
+      update(); startTimer();
+
+      // keyboard accessibility
+      document.addEventListener('keydown', (e)=>{
+        if(e.key==='ArrowLeft') prev();
+        if(e.key==='ArrowRight') next();
+      });
+
+      // lazy load strategy: replace each img src with data-src if you want later enhancements
+    })();
+  </script>
+</body>
+</html>
